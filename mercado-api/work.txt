@@ -1,0 +1,30 @@
+/7/03/2026, Sábado, 3-4 horas de trabalho (Dia 1)
+    Setup do Projeto
+        Criação da api em laravel
+        Criação da ui em React
+        Criação da base de dados com Postgresql
+        Ligação da api com a base de dados
+        Setup do github
+    
+    Trabalho na api
+        Configuração com a base de dados
+        Começo da definição das migrações
+            Planear como itens apagados afetam compras já feitas (Atenção ao problema)
+
+Puta de dor de cabeça com o postgre, não instalava por nada. O resto correu tudo bem. Tenho de me familiarizar mais
+com o github. 
+Tem de se ter cuidado com itens apagados, têm de afetar tabelas diferentes da maneira correta. Uma compra já feita não
+pode deitar fora um item apagado. Se um item apagado estiver no carrinho, vai ser apanhado pela verificação da api caso 
+a compra ande para a frente.
+O laravel permite um modo exclusivo para API, do caralho
+
+9/03/2026, Segunda, horas de trabalho (Dia 2)
+    Trabalho na api 
+        Migrações feitas    
+            Vai haver muita redundância na tabela ORDERS, mas dado o escopo da aplicação e simplicidade como o seu objetivo,
+                é uma troca válida.
+            A tabela users vai ser a default do laravel, já tem tudo o que é preciso feito e vem como um monte de funcionalidade
+            já a funcionar.
+        Controladores Base Feitos
+Nos controladores, Se usar-mos o modelo em vez do seu ID, o laravel trata conta de muita merda
+Para correr o servidor para testes "php -S localhost:8000 -t public"
