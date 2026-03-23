@@ -5,10 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Discount;
+
 class Category extends Model
 {
     use SoftDeletes;
 
-    // Adiciona esta linha:
-    protected $fillable = ['category_name', 'category_unit'];
+    protected $fillable = ['category_name', 'category_description'];
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'category__discounts');
+    }
 }

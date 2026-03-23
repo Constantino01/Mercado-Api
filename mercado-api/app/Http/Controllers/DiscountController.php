@@ -1,68 +1,45 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Discount;
 use Illuminate\Http\Request;
 
-class DiscountController extends Controller
+class DiscountController extends BaseApiController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct()
     {
-        return response()->json(Discount::all());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
+        $this->model = Discount::class;
+        
+        $this->regrasValidacao = [
             'discount_name' => 'required|string|max:255',
-            'discount_type' => 'required|string|max:50',
             'discount_value' => 'required|numeric|min:0',
-            'discount_start_date' => 'nullable|date',
-            'discount_end_date' => 'nullable|date|after_or_equal:discount_start_date',
-        ]);
-
-        $discount = Discount::create($validated);
-        return response()->json($discount, 201);
+            'discount_type' => 'required|in:percent,fixed',
+            'discount_start_date' => 'required|date|after_or_equal:today',
+            'discount_end_date' => 'required|date|after_or_equal:discount_start_date',
+        ];
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Discount $discount)
+    public function syncItems(Request $request, $id)
     {
+        $discount = $this->model::findOrFail($id);
+        
+        // O sync() apaga os antigos e insere os novos automaticamente
+        if ($request->has('products')) {
+            $discount->products()->sync($request->products);
+        }
+        
+        if ($request->has('categories')) {
+            $discount->categories()->sync($request->categories);
+        }
+        
+        return response()->json(['message' => 'Associações atualizadas com sucesso!']);
+    }
+
+    public function show($id)
+    {
+        // O "with" obriga o Laravel a carregar as relações e enviá-las no JSON para o React
+        $discount = $this->model::with(['products', 'categories'])->findOrFail($id);
+        
         return response()->json($discount);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Discount $discount)
-    {
-        $validated = $request->validate([
-            'discount_name' => 'sometimes|string|max:255',
-            'discount_type' => 'sometimes|string|max:50',
-            'discount_value' => 'sometimes|numeric|min:0',
-            'discount_start_date' => 'nullable|date',
-            'discount_end_date' => 'nullable|date|after_or_equal:discount_start_date',
-        ]);
-
-        $discount->update($validated);
-        return response()->json($discount);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Discount $discount)
-    {
-        $discount->delete();
-        return response()->json(['message' => 'Desconto Apagado Com Sucesso']);
     }
 }

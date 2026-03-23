@@ -28,3 +28,11 @@ O laravel permite um modo exclusivo para API, do caralho
         Controladores Base Feitos
 Nos controladores, Se usar-mos o modelo em vez do seu ID, o laravel trata conta de muita merda
 Para correr o servidor para testes "php -S localhost:8000 -t public"
+
+10/03/2026, Terça, Dia 3
+    API
+
+Many-Many não precisa de controladores propios 
+    attach(): Adiciona ligações 
+    detach(): Remove Ligações 
+    sync(): Atualiza para uma lista exata

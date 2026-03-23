@@ -1,63 +1,23 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CategoryController extends BaseApiController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct()
     {
-        return response()->json(Category::all());        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'category_name' => 'required|string|max:255',
-            'category_unit' => 'required|string|max:50',
-        ]);
-
-        $category = Category::create($validated);
-        return response()->json($category, 201);        
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        return response()->json($category);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        $validated = $request->validate([
-            'category_name' => 'sometimes|string|max:255',
-            'category_unit' => 'sometimes|string|max:50',
-        ]);
-
-        $category->update($validated);
+        $this->model = Category::class;
         
-        return response()->json($category);
+        $this->regrasValidacao = [
+            'category_name' => 'required|string|max:255',
+            'category_description' => 'nullable|string',
+        ];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
+    public function discounts()
     {
-        $category->delete();
-        return response()->json(['message' => 'Categoria Apagada Com Sucesso']);
+        // Confirma se o nome da tua tabela pivot é este
+        return $this->belongsToMany(Discount::class, 'category__discounts', 'category_id', 'discount_id');
     }
 }

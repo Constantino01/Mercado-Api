@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('product_name');
             $table->decimal('product_cost', 10, 2);
             $table->longText('product_image')->nullable();
+            $table->string('product_description')->nullable();
+            $table->string('unit_type');
+            $table->decimal('product_min_quantity', 10, 2);
 
             $table->timestamps();
             $table->softDeletes();
