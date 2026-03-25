@@ -16,8 +16,10 @@ return new class extends Migration
 
             $table->string('client_email');
             $table->string('client_number'); 
+            $table->string('order_status');
+            $table->string('order_code');
             $table->decimal('order_cost', 10, 2);
-            
+                        
             $table->timestamps();
             $table->softDeletes();
         });
